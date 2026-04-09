@@ -1,69 +1,266 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>lucia verification</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ℓucıα 𝓷oırè</title>
+
   <style>
+    * {
+      box-sizing: border-box;
+    }
+
     body {
       margin: 0;
-      background: #0f0f13;
-      font-family: 'Arial';
+      min-height: 100vh;
       display: flex;
       justify-content: center;
       align-items: center;
-      height: 100vh;
+      padding: 24px;
+      overflow: hidden;
+      font-family: Arial, sans-serif;
       color: white;
+      background: linear-gradient(135deg, #0f0f13 40%, #ff4da6 100%);
+    }
+
+    .sparkles {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      overflow: hidden;
+      z-index: 0;
+    }
+
+    .sparkle {
+      position: absolute;
+      color: rgba(255, 255, 255, 0.78);
+      font-size: 14px;
+      animation: floatUp linear infinite;
+      text-shadow: 0 0 8px rgba(255, 182, 193, 0.85);
+    }
+
+    @keyframes floatUp {
+      from {
+        transform: translateY(100vh) scale(0.8);
+        opacity: 0;
+      }
+      20% {
+        opacity: 1;
+      }
+      to {
+        transform: translateY(-10vh) scale(1.1);
+        opacity: 0;
+      }
+    }
+
+    .audio-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.55);
+      backdrop-filter: blur(6px);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 999;
+      padding: 24px;
+    }
+
+    .audio-box {
+      width: 100%;
+      max-width: 350px;
+      text-align: center;
+      background: rgba(255, 255, 255, 0.10);
+      border: 1px solid rgba(255, 192, 203, 0.35);
+      border-radius: 28px;
+      padding: 28px 22px;
+      backdrop-filter: blur(18px);
+      box-shadow: 0 0 28px rgba(255, 105, 180, 0.18);
+    }
+
+    .audio-title {
+      margin: 0 0 10px;
+      font-size: 2rem;
+      font-weight: 700;
+      text-shadow: 0 0 16px rgba(255,255,255,0.35);
+    }
+
+    .audio-sub {
+      margin: 0 0 18px;
+      font-size: 1rem;
+      color: rgba(255,255,255,0.9);
+    }
+
+    .audio-btn {
+      border: none;
+      border-radius: 18px;
+      padding: 14px 22px;
+      background: linear-gradient(180deg, #ffb6cf, #ff8fbc);
+      color: white;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 0 0 16px rgba(255, 105, 180, 0.45);
     }
 
     .card {
-      background: rgba(255,255,255,0.05);
-      padding: 40px;
-      border-radius: 20px;
+      position: relative;
+      z-index: 2;
+      width: 100%;
+      max-width: 430px;
+      border-radius: 28px;
+      padding: 78px 24px 26px;
       text-align: center;
-      backdrop-filter: blur(20px);
-      box-shadow: 0 0 30px rgba(255,105,180,0.3);
+      background: rgba(255, 255, 255, 0.12);
+      border: 1px solid rgba(255, 192, 203, 0.28);
+      backdrop-filter: blur(18px);
+      box-shadow: 0 0 35px rgba(255, 105, 180, 0.15);
     }
 
-    h1 {
-      color: #ff69b4;
+    .server-icon {
+      position: absolute;
+      top: -56px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 112px;
+      height: 112px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 3px solid rgba(255,255,255,0.28);
+      box-shadow: 0 0 24px rgba(255,255,255,0.18);
+      background: rgba(255,255,255,0.2);
     }
 
-    button {
-      margin-top: 20px;
-      padding: 15px 30px;
+    .server-name {
+      margin: 0;
+      font-size: 2.2rem;
+      font-weight: 700;
+      color: #ffffff;
+      text-shadow:
+        0 0 8px rgba(255,255,255,0.6),
+        0 0 20px rgba(255,182,193,0.35);
+    }
+
+    .server-sub {
+      margin: 14px 0 22px;
+      font-size: 1.05rem;
+      line-height: 1.45;
+      color: rgba(255,255,255,0.95);
+      text-shadow: 0 0 10px rgba(255,255,255,0.22);
+    }
+
+    .divider {
+      margin: 8px 0 22px;
+      color: #ffd6e7;
+      font-size: 1.3rem;
+      text-shadow: 0 0 8px rgba(255, 182, 193, 0.25);
+    }
+
+    .verify-btn {
+      width: 100%;
       border: none;
-      border-radius: 30px;
-      background: #ff4da6;
-      color: white;
-      font-size: 16px;
+      border-radius: 20px;
+      padding: 17px 18px;
+      font-size: 1.35rem;
+      font-weight: 700;
       cursor: pointer;
-      box-shadow: 0 0 20px #ff4da6;
+      color: white;
+      background: linear-gradient(180deg, #ffc3da, #f7a3c7);
+      box-shadow:
+        0 0 12px rgba(255,255,255,0.18),
+        0 0 24px rgba(255,105,180,0.34);
+      transition: transform 0.18s ease, box-shadow 0.18s ease;
     }
 
-    button:hover {
-      transform: scale(1.05);
+    .verify-btn:hover {
+      transform: scale(1.02);
+      box-shadow:
+        0 0 14px rgba(255,255,255,0.2),
+        0 0 28px rgba(255,105,180,0.5);
+    }
+
+    .small-note {
+      margin-top: 14px;
+      font-size: 0.9rem;
+      color: rgba(255,255,255,0.72);
+    }
+
+    @media (max-width: 480px) {
+      .server-name {
+        font-size: 1.9rem;
+      }
+
+      .card {
+        padding: 74px 18px 22px;
+      }
+
+      .verify-btn {
+        font-size: 1.2rem;
+      }
+
+      .divider {
+        font-size: 1.05rem;
+      }
     }
   </style>
 </head>
-
 <body>
+  <div class="sparkles" id="sparkles"></div>
 
-<div class="card">
-  <h1>xoxo, lucia 💋</h1>
-  <p>verify to enter ♡</p>
+  <div class="audio-overlay" id="audioOverlay">
+    <div class="audio-box">
+      <h2 class="audio-title">Click to Enable Audio</h2>
+      <p class="audio-sub">enter the site with sound ♡</p>
+      <button class="audio-btn" onclick="enableAudio()">enable ♱</button>
+    </div>
+  </div>
 
-  <button onclick="login()">verify ♱</button>
-</div>
+  <div class="card">
+    <img src="server-icon.png" alt="Server Icon" class="server-icon" />
 
-<audio id="bgm" src="music.mp3" loop></audio>
+    <h1 class="server-name">ℓucıα 𝓷oırè</h1>
+    <p class="server-sub">verify to gain access to the server ♡</p>
 
-<script>
-function login() {
-  document.getElementById("bgm").play();
+    <div class="divider">♡ ───────── ♡ ───────── ♡</div>
 
-  window.location.href =
-  "https://discord.com/oauth2/authorize?client_id=YOUR_CLIENT_ID&redirect_uri=YOUR_REDIRECT&response_type=code&scope=identify%20guilds.join";
-}
-</script>
+    <button class="verify-btn" onclick="login()">Verify</button>
 
+    <div class="small-note">xoxo, lucia 💋</div>
+  </div>
+
+  <audio id="bgm" src="music.mp3" loop></audio>
+  <audio id="clickSound" src="click.mp3" preload="auto"></audio>
+
+  <script>
+    const sparkleContainer = document.getElementById("sparkles");
+    const sparkleSymbols = ["✦", "⋆", "♡", "✧", "⟡"];
+
+    for (let i = 0; i < 22; i++) {
+      const sparkle = document.createElement("div");
+      sparkle.className = "sparkle";
+      sparkle.textContent = sparkleSymbols[Math.floor(Math.random() * sparkleSymbols.length)];
+      sparkle.style.left = Math.random() * 100 + "vw";
+      sparkle.style.animationDuration = (6 + Math.random() * 7) + "s";
+      sparkle.style.animationDelay = (Math.random() * 6) + "s";
+      sparkle.style.fontSize = (10 + Math.random() * 10) + "px";
+      sparkleContainer.appendChild(sparkle);
+    }
+
+    function enableAudio() {
+      const bgm = document.getElementById("bgm");
+      bgm.play().catch(() => {});
+      document.getElementById("audioOverlay").style.display = "none";
+    }
+
+    function login() {
+      const clickSound = document.getElementById("clickSound");
+      clickSound.currentTime = 0;
+      clickSound.play().catch(() => {});
+
+      setTimeout(() => {
+        window.location.href =
+          "https://discord.com/oauth2/authorize?client_id=YOUR_CLIENT_ID&redirect_uri=YOUR_REDIRECT_URI&response_type=code&scope=identify%20guilds.join";
+      }, 250);
+    }
+  </script>
 </body>
 </html>
