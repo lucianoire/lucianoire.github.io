@@ -1,239 +1,131 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Dollein Verify</title>
-  <style>
-    * {
-      box-sizing: border-box;
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>verify</title>
 
-    body {
-      margin: 0;
-      min-height: 100vh;
-      font-family: Arial, sans-serif;
-      background: linear-gradient(180deg, #0f0612 0%, #2a0d23 45%, #5a183f 100%);
-      overflow-x: hidden;
-      color: white;
-    }
+<style>
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: linear-gradient(180deg, #0a0012, #3a0d1f);
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 
-    .bg {
-      position: fixed;
-      inset: 0;
-      background:
-        radial-gradient(circle at top, rgba(255,255,255,0.08), transparent 30%),
-        radial-gradient(circle at bottom, rgba(255,255,255,0.04), transparent 25%);
-      filter: blur(0px);
-      z-index: 0;
-    }
+/* AUDIO POPUP */
+#audioScreen {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.6);
+  backdrop-filter: blur(10px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+}
 
-    .center {
-      position: relative;
-      z-index: 1;
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 24px;
-    }
+.audioBox {
+  background: rgba(255,255,255,0.1);
+  padding: 30px;
+  border-radius: 20px;
+  text-align: center;
+  color: white;
+  width: 80%;
+  max-width: 320px;
+}
 
-    .card {
-      width: 100%;
-      max-width: 700px;
-      background: rgba(40, 40, 40, 0.45);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      border: 1px solid rgba(255,255,255,0.18);
-      border-radius: 28px;
-      padding: 90px 28px 34px;
-      text-align: center;
-      position: relative;
-      box-shadow: 0 20px 50px rgba(0,0,0,0.25);
-    }
+.audioBox h2 {
+  margin: 0 0 10px;
+}
 
-    .avatar {
-      width: 116px;
-      height: 116px;
-      border-radius: 50%;
-      object-fit: cover;
-      position: absolute;
-      top: -58px;
-      left: 50%;
-      transform: translateX(-50%);
-      border: 4px solid rgba(255,255,255,0.35);
-      background: #eee;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.25);
-    }
+.audioBox button {
+  margin-top: 15px;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 12px;
+  background: #e6a6b4;
+  color: white;
+  font-weight: bold;
+}
 
-    .title {
-      font-size: 4rem;
-      line-height: 1;
-      margin: 0;
-      font-weight: 800;
-      color: white;
-      text-shadow: 0 0 16px rgba(255,255,255,0.95);
-    }
+/* MAIN CARD */
+.card {
+  background: rgba(255,255,255,0.1);
+  backdrop-filter: blur(15px);
+  border-radius: 20px;
+  padding: 30px;
+  text-align: center;
+  color: white;
+  width: 85%;
+  max-width: 340px;
+}
 
-    .subtitle {
-      margin: 16px 0 34px;
-      font-size: 1.2rem;
-      color: rgba(255,255,255,0.95);
-      text-shadow: 0 0 12px rgba(255,255,255,0.8);
-    }
+.card img {
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  margin-top: -60px;
+  border: 4px solid white;
+}
 
-    .verify-btn {
-      display: inline-block;
-      width: 100%;
-      max-width: 560px;
-      border: none;
-      border-radius: 20px;
-      padding: 24px 20px;
-      font-size: 1.2rem;
-      font-weight: 800;
-      cursor: pointer;
-      color: white;
-      background: #efc8cf;
-      box-shadow: 0 0 28px rgba(239, 200, 207, 0.9);
-      transition: transform 0.15s ease, opacity 0.15s ease;
-    }
+.card h1 {
+  margin: 15px 0 5px;
+}
 
-    .verify-btn:hover {
-      transform: translateY(-2px);
-      opacity: 0.96;
-    }
+.card p {
+  opacity: 0.8;
+}
 
-    .footer {
-      position: relative;
-      z-index: 1;
-      margin-top: -48px;
-      text-align: center;
-      padding-bottom: 30px;
-      color: #e39aa8;
-      font-weight: 700;
-      font-size: 1rem;
-    }
-
-    .footer a {
-      color: #e39aa8;
-      text-decoration: none;
-    }
-
-    .audio-overlay {
-      position: fixed;
-      inset: 0;
-      z-index: 10;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 24px;
-      background: rgba(0,0,0,0.18);
-      backdrop-filter: blur(8px);
-      -webkit-backdrop-filter: blur(8px);
-    }
-
-    .audio-box {
-      width: 100%;
-      max-width: 700px;
-      background: rgba(35, 35, 35, 0.55);
-      border: 1px solid rgba(255,255,255,0.22);
-      border-radius: 30px;
-      padding: 42px 26px;
-      text-align: center;
-      box-shadow: 0 20px 50px rgba(0,0,0,0.28);
-    }
-
-    .audio-box h2 {
-      margin: 0 0 12px;
-      font-size: 3.2rem;
-      line-height: 1.05;
-      font-weight: 800;
-      color: white;
-      text-shadow: 0 0 16px rgba(255,255,255,0.25);
-    }
-
-    .audio-box p {
-      margin: 0 0 28px;
-      font-size: 1.05rem;
-      color: rgba(255,255,255,0.92);
-    }
-
-    .enable-btn {
-      border: none;
-      border-radius: 20px;
-      padding: 18px 42px;
-      font-size: 1.15rem;
-      font-weight: 800;
-      color: white;
-      background: #eb9fc0;
-      cursor: pointer;
-      box-shadow: 0 0 26px rgba(235,159,192,0.85);
-    }
-
-    @media (max-width: 640px) {
-      .card {
-        padding: 78px 18px 24px;
-        border-radius: 24px;
-      }
-
-      .title {
-        font-size: 2.8rem;
-      }
-
-      .audio-box h2 {
-        font-size: 2.3rem;
-      }
-
-      .verify-btn {
-        padding: 20px 16px;
-        font-size: 1.05rem;
-      }
-    }
-  </style>
+.card a {
+  display: block;
+  margin-top: 20px;
+  padding: 14px;
+  border-radius: 14px;
+  background: #e6c1c9;
+  color: white;
+  text-decoration: none;
+  font-weight: bold;
+}
+</style>
 </head>
+
 <body>
-  <div class="bg"></div>
 
-  <div class="audio-overlay" id="audioOverlay">
-    <div class="audio-box">
-      <h2>Click to Enable Audio</h2>
-      <p>enter the site with sound ♡</p>
-      <button class="enable-btn" onclick="enableAudio()">enable ✧</button>
-    </div>
+<!-- AUDIO SCREEN -->
+<div id="audioScreen">
+  <div class="audioBox">
+    <h2>Click to Enable Audio</h2>
+    <p>enter the site with sound ♡</p>
+    <button onclick="enableAudio()">enable ✧</button>
   </div>
+</div>
 
-  <div class="center">
-    <div class="card">
-      <img
-        class="avatar"
-        src="https://i.imgur.com/8Km9tLL.jpeg"
-        alt="avatar"
-      />
-      <h1 class="title">Dollein</h1>
-      <div class="subtitle">verify to gain access ✿</div>
-      <button class="verify-btn" onclick="goVerify()">Verify</button>
-    </div>
-  </div>
+<!-- MAIN -->
+<div class="card">
+  <img src="profile.png">
+  <h1>ℓucıα 𝓷oırè</h1>
+  <p>verify to gain access ✿</p>
 
-  <div class="footer">
-    Service provided by <a href="#">VaultCord.com</a> |
-    <a href="#">Privacy Policy</a>
-  </div>
+  <a href="https://verify-backend-production-ba8f.up.railway.app/login">
+    Verify
+  </a>
+</div>
 
-  <audio id="bgMusic" loop>
-    <source src="music.mp3" type="audio/mpeg" />
-  </audio>
+<!-- AUDIO -->
+<audio id="bgm" loop>
+  <source src="audio.mp3" type="audio/mpeg">
+</audio>
 
-  <script>
-    function enableAudio() {
-      const music = document.getElementById("bgMusic");
-      music.play().catch(() => {});
-      document.getElementById("audioOverlay").style.display = "none";
-    }
+<script>
+function enableAudio() {
+  document.getElementById("bgm").play();
+  document.getElementById("audioScreen").style.display = "none";
+}
+</script>
 
-    function goVerify() {
-      window.location.href = "https://verify-backend-production-ba8f.up.railway.app/login";
-    }
-  </script>
 </body>
 </html>
