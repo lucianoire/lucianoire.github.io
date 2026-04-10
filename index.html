@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>verify</title>
+<title>ℓucıα 𝓷oırè</title>
 
 <style>
 body {
@@ -11,9 +11,8 @@ body {
   font-family: Arial, sans-serif;
   background: linear-gradient(180deg, #0a0012, #3a0d1f);
   height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  overflow: hidden;
+  color: white;
 }
 
 /* AUDIO POPUP */
@@ -33,33 +32,43 @@ body {
   padding: 30px;
   border-radius: 20px;
   text-align: center;
-  color: white;
-  width: 80%;
-  max-width: 320px;
-}
-
-.audioBox h2 {
-  margin: 0 0 10px;
 }
 
 .audioBox button {
-  margin-top: 15px;
+  margin-top: 10px;
   padding: 12px 20px;
-  border: none;
   border-radius: 12px;
+  border: none;
   background: #e6a6b4;
   color: white;
   font-weight: bold;
 }
 
-/* MAIN CARD */
+/* FLOATING SYMBOLS */
+.float {
+  position: absolute;
+  opacity: 0.25;
+  animation: float 6s infinite ease-in-out;
+  font-size: 20px;
+}
+
+@keyframes float {
+  0% { transform: translateY(0); }
+  50% { transform: translateY(-20px); }
+  100% { transform: translateY(0); }
+}
+
+/* CARD */
 .card {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   background: rgba(255,255,255,0.1);
-  backdrop-filter: blur(15px);
-  border-radius: 20px;
   padding: 30px;
+  border-radius: 25px;
+  backdrop-filter: blur(15px);
   text-align: center;
-  color: white;
   width: 85%;
   max-width: 340px;
 }
@@ -68,12 +77,13 @@ body {
   width: 90px;
   height: 90px;
   border-radius: 50%;
+  border: 3px solid white;
   margin-top: -60px;
-  border: 4px solid white;
 }
 
 .card h1 {
   margin: 15px 0 5px;
+  text-shadow: 0 0 10px white;
 }
 
 .card p {
@@ -83,19 +93,56 @@ body {
 .card a {
   display: block;
   margin-top: 20px;
-  padding: 14px;
-  border-radius: 14px;
+  padding: 15px;
+  border-radius: 15px;
   background: #e6c1c9;
   color: white;
   text-decoration: none;
   font-weight: bold;
+}
+
+/* SUCCESS */
+#successBanner {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 20;
+}
+
+.successBox {
+  background: #7ac79a;
+  padding: 15px 25px;
+  border-radius: 15px;
+  font-weight: bold;
+}
+
+/* typing cursor */
+#typingText::after {
+  content: "|";
+  animation: blink 1s infinite;
+}
+
+@keyframes blink {
+  0%, 50%, 100% { opacity: 1; }
+  25%, 75% { opacity: 0; }
+}
+
+.hidden {
+  display: none;
 }
 </style>
 </head>
 
 <body>
 
-<!-- AUDIO SCREEN -->
+<!-- FLOATING SYMBOLS -->
+<div class="float" style="top:10%;left:10%">✧</div>
+<div class="float" style="top:20%;right:10%">♡</div>
+<div class="float" style="bottom:20%;left:20%">✿</div>
+<div class="float" style="bottom:10%;right:20%">✧</div>
+
+<!-- AUDIO -->
 <div id="audioScreen">
   <div class="audioBox">
     <h2>Click to Enable Audio</h2>
@@ -104,7 +151,7 @@ body {
   </div>
 </div>
 
-<!-- MAIN -->
+<!-- CARD -->
 <div class="card">
   <img src="profile.png">
   <h1>ℓucıα 𝓷oırè</h1>
@@ -115,7 +162,13 @@ body {
   </a>
 </div>
 
-<!-- AUDIO -->
+<!-- SUCCESS -->
+<div id="successBanner" class="hidden">
+  <div class="successBox">
+    <span id="typingText"></span>
+  </div>
+</div>
+
 <audio id="bgm" loop>
   <source src="audio.mp3" type="audio/mpeg">
 </audio>
@@ -124,6 +177,25 @@ body {
 function enableAudio() {
   document.getElementById("bgm").play();
   document.getElementById("audioScreen").style.display = "none";
+}
+
+const params = new URLSearchParams(window.location.search);
+
+if (params.get("success") === "true") {
+  document.getElementById("successBanner").classList.remove("hidden");
+
+  const text = "you are now verified! you can close this now";
+  let i = 0;
+
+  function type() {
+    if (i < text.length) {
+      document.getElementById("typingText").innerHTML += text.charAt(i);
+      i++;
+      setTimeout(type, 35);
+    }
+  }
+
+  type();
 }
 </script>
 
