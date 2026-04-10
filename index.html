@@ -1,203 +1,306 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ℓucıα 𝓷oırè</title>
-
-<style>
-body {
-  margin: 0;
-  font-family: Arial, sans-serif;
-  background: linear-gradient(180deg, #0a0012, #3a0d1f);
-  height: 100vh;
-  overflow: hidden;
-  color: white;
-}
-
-/* AUDIO POPUP */
-#audioScreen {
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.6);
-  backdrop-filter: blur(10px);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 10;
-}
-
-.audioBox {
-  background: rgba(255,255,255,0.1);
-  padding: 30px;
-  border-radius: 20px;
-  text-align: center;
-}
-
-.audioBox button {
-  margin-top: 10px;
-  padding: 12px 20px;
-  border-radius: 12px;
-  border: none;
-  background: #e6a6b4;
-  color: white;
-  font-weight: bold;
-}
-
-/* FLOATING SYMBOLS */
-.float {
-  position: absolute;
-  opacity: 0.25;
-  animation: float 6s infinite ease-in-out;
-  font-size: 20px;
-}
-
-@keyframes float {
-  0% { transform: translateY(0); }
-  50% { transform: translateY(-20px); }
-  100% { transform: translateY(0); }
-}
-
-/* CARD */
-.card {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background: rgba(255,255,255,0.1);
-  padding: 30px;
-  border-radius: 25px;
-  backdrop-filter: blur(15px);
-  text-align: center;
-  width: 85%;
-  max-width: 340px;
-}
-
-.card img {
-  width: 90px;
-  height: 90px;
-  border-radius: 50%;
-  border: 3px solid white;
-  margin-top: -60px;
-}
-
-.card h1 {
-  margin: 15px 0 5px;
-  text-shadow: 0 0 10px white;
-}
-
-.card p {
-  opacity: 0.8;
-}
-
-.card a {
-  display: block;
-  margin-top: 20px;
-  padding: 15px;
-  border-radius: 15px;
-  background: #e6c1c9;
-  color: white;
-  text-decoration: none;
-  font-weight: bold;
-}
-
-/* SUCCESS */
-#successBanner {
-  position: fixed;
-  top: 20px;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 20;
-}
-
-.successBox {
-  background: #7ac79a;
-  padding: 15px 25px;
-  border-radius: 15px;
-  font-weight: bold;
-}
-
-/* typing cursor */
-#typingText::after {
-  content: "|";
-  animation: blink 1s infinite;
-}
-
-@keyframes blink {
-  0%, 50%, 100% { opacity: 1; }
-  25%, 75% { opacity: 0; }
-}
-
-.hidden {
-  display: none;
-}
-</style>
-</head>
-
-<body>
-
-<!-- FLOATING SYMBOLS -->
-<div class="float" style="top:10%;left:10%">✧</div>
-<div class="float" style="top:20%;right:10%">♡</div>
-<div class="float" style="bottom:20%;left:20%">✿</div>
-<div class="float" style="bottom:10%;right:20%">✧</div>
-
-<!-- AUDIO -->
-<div id="audioScreen">
-  <div class="audioBox">
-    <h2>Click to Enable Audio</h2>
-    <p>enter the site with sound ♡</p>
-    <button onclick="enableAudio()">enable ✧</button>
-  </div>
-</div>
-
-<!-- CARD -->
-<div class="card">
-  <img src="profile.png">
-  <h1>ℓucıα 𝓷oırè</h1>
-  <p>verify to gain access ✿</p>
-
-  <a href="https://verify-backend-production-ba8f.up.railway.app/login">
-    Verify
-  </a>
-</div>
-
-<!-- SUCCESS -->
-<div id="successBanner" class="hidden">
-  <div class="successBox">
-    <span id="typingText"></span>
-  </div>
-</div>
-
-<audio id="bgm" loop>
-  <source src="audio.mp3" type="audio/mpeg">
-</audio>
-
-<script>
-function enableAudio() {
-  document.getElementById("bgm").play();
-  document.getElementById("audioScreen").style.display = "none";
-}
-
-const params = new URLSearchParams(window.location.search);
-
-if (params.get("success") === "true") {
-  document.getElementById("successBanner").classList.remove("hidden");
-
-  const text = "you are now verified! you can close this now";
-  let i = 0;
-
-  function type() {
-    if (i < text.length) {
-      document.getElementById("typingText").innerHTML += text.charAt(i);
-      i++;
-      setTimeout(type, 35);
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ℓucıα 𝓷oırè</title>
+  <style>
+    * {
+      box-sizing: border-box;
     }
-  }
 
-  type();
-}
-</script>
+    html, body {
+      margin: 0;
+      min-height: 100%;
+      font-family: Arial, sans-serif;
+      overflow-x: hidden;
+      color: white;
+      background:
+        radial-gradient(circle at 50% 15%, rgba(120, 40, 90, 0.22), transparent 25%),
+        linear-gradient(180deg, #050009 0%, #180012 45%, #4a1028 100%);
+    }
 
+    body {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .page {
+      position: relative;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px 14px 40px;
+    }
+
+    .float {
+      position: absolute;
+      opacity: 0.22;
+      animation: float 6s infinite ease-in-out;
+      font-size: 20px;
+      user-select: none;
+      pointer-events: none;
+      text-shadow: 0 0 12px rgba(255,255,255,0.08);
+    }
+
+    .f1 { top: 10%; left: 10%; }
+    .f2 { top: 18%; right: 10%; animation-duration: 7s; }
+    .f3 { bottom: 20%; left: 18%; animation-duration: 8s; }
+    .f4 { bottom: 12%; right: 18%; animation-duration: 6.5s; }
+    .f5 { top: 35%; left: 6%; animation-duration: 7.5s; }
+    .f6 { top: 38%; right: 7%; animation-duration: 8.2s; }
+
+    @keyframes float {
+      0% { transform: translateY(0); }
+      50% { transform: translateY(-18px); }
+      100% { transform: translateY(0); }
+    }
+
+    .card {
+      width: 100%;
+      max-width: 760px;
+      position: relative;
+      text-align: center;
+      padding: 88px 26px 32px;
+      border-radius: 34px;
+      background: rgba(44, 36, 44, 0.40);
+      border: 1px solid rgba(255,255,255,0.14);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      box-shadow:
+        0 24px 60px rgba(0,0,0,0.28),
+        0 0 35px rgba(255, 180, 220, 0.08);
+    }
+
+    .avatar-wrap {
+      position: absolute;
+      top: -62px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 124px;
+      height: 124px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.95);
+      padding: 5px;
+      box-shadow: 0 10px 24px rgba(0,0,0,0.25);
+    }
+
+    .avatar {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 50%;
+      display: block;
+      background: #ddd;
+    }
+
+    .name {
+      margin: 0;
+      font-size: 3.6rem;
+      line-height: 1.02;
+      font-weight: 800;
+      color: white;
+      text-shadow:
+        0 0 12px rgba(255,255,255,0.85),
+        0 0 26px rgba(255,255,255,0.12);
+    }
+
+    .sub {
+      margin: 16px 0 26px;
+      font-size: 1.05rem;
+      color: rgba(255,255,255,0.92);
+      text-shadow: 0 0 10px rgba(255,255,255,0.10);
+    }
+
+    .verify-btn {
+      display: block;
+      width: 100%;
+      max-width: 620px;
+      margin: 0 auto;
+      border: none;
+      border-radius: 22px;
+      padding: 24px 20px;
+      font-size: 1.18rem;
+      font-weight: 800;
+      background: #e7c7cf;
+      color: rgba(255,255,255,0.98);
+      text-decoration: none;
+      box-shadow:
+        0 0 30px rgba(255, 215, 230, 0.48),
+        0 10px 24px rgba(0,0,0,0.18);
+    }
+
+    .audio-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 20;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 18px;
+      background: rgba(0,0,0,0.30);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+    }
+
+    .audio-box {
+      width: 100%;
+      max-width: 700px;
+      background: rgba(35, 35, 35, 0.55);
+      border: 1px solid rgba(255,255,255,0.22);
+      border-radius: 30px;
+      padding: 40px 24px;
+      text-align: center;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.28);
+    }
+
+    .audio-box h2 {
+      margin: 0 0 10px;
+      font-size: 3rem;
+      line-height: 1.05;
+      font-weight: 800;
+      color: white;
+      text-shadow: 0 0 16px rgba(255,255,255,0.25);
+    }
+
+    .audio-box p {
+      margin: 0 0 24px;
+      font-size: 1.05rem;
+      color: rgba(255,255,255,0.92);
+    }
+
+    .enable-btn {
+      border: none;
+      border-radius: 20px;
+      padding: 18px 42px;
+      font-size: 1.15rem;
+      font-weight: 800;
+      color: white;
+      background: #eb9fc0;
+      cursor: pointer;
+      box-shadow: 0 0 26px rgba(235,159,192,0.85);
+    }
+
+    #successBanner {
+      position: fixed;
+      top: 22px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 30;
+      width: calc(100% - 24px);
+      max-width: 760px;
+      display: none;
+    }
+
+    .successBox {
+      background: #76c69b;
+      color: white;
+      border-radius: 18px;
+      padding: 20px 22px;
+      font-weight: 800;
+      box-shadow: 0 12px 30px rgba(0,0,0,0.18);
+      font-size: 1.05rem;
+    }
+
+    #typingText::after {
+      content: "|";
+      animation: blink 1s infinite;
+    }
+
+    @keyframes blink {
+      0%, 50%, 100% { opacity: 1; }
+      25%, 75% { opacity: 0; }
+    }
+
+    @media (max-width: 640px) {
+      .audio-box h2 {
+        font-size: 2.3rem;
+      }
+
+      .name {
+        font-size: 2.9rem;
+      }
+
+      .card {
+        padding: 82px 18px 24px;
+      }
+
+      .verify-btn {
+        padding: 20px 16px;
+        font-size: 1.05rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="float f1">✧</div>
+  <div class="float f2">♡</div>
+  <div class="float f3">✿</div>
+  <div class="float f4">✧</div>
+  <div class="float f5">♡</div>
+  <div class="float f6">✿</div>
+
+  <div id="successBanner">
+    <div class="successBox">
+      <span id="typingText"></span>
+    </div>
+  </div>
+
+  <div id="audioScreen" class="audio-overlay">
+    <div class="audio-box">
+      <h2>Click to Enable Audio</h2>
+      <p>enter the site with sound ♡</p>
+      <button class="enable-btn" onclick="enableAudio()">enable ✧</button>
+    </div>
+  </div>
+
+  <div class="page">
+    <div class="card">
+      <div class="avatar-wrap">
+        <img class="avatar" src="IMG_0131.png" alt="profile">
+      </div>
+
+      <h1 class="name">ℓucıα 𝓷oırè</h1>
+      <p class="sub">verify to gain access ✿</p>
+
+      <a class="verify-btn" href="https://verify-backend-production-ba8f.up.railway.app/login">
+        Verify
+      </a>
+    </div>
+  </div>
+
+  <audio id="bgm" loop>
+    <source src="music.mp3" type="audio/mpeg">
+  </audio>
+
+  <script>
+    function enableAudio() {
+      const audio = document.getElementById("bgm");
+      audio.play().catch(() => {});
+      document.getElementById("audioScreen").style.display = "none";
+    }
+
+    const params = new URLSearchParams(window.location.search);
+
+    if (params.get("success") === "true") {
+      const banner = document.getElementById("successBanner");
+      const typing = document.getElementById("typingText");
+      const text = "you are now verified! you can close this now";
+      let i = 0;
+
+      banner.style.display = "block";
+
+      function typeText() {
+        if (i < text.length) {
+          typing.textContent += text.charAt(i);
+          i++;
+          setTimeout(typeText, 35);
+        }
+      }
+
+      typeText();
+    }
+  </script>
 </body>
 </html>
